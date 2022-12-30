@@ -33,7 +33,7 @@ const createCategory = asyncHandler(async (req, res) => {
 
 const getAllCategory = asyncHandler(async (req, res) => {
 
-    const categories = Category.find()
+    const categories = await Category.find()
 
 
     if (!categories) {
