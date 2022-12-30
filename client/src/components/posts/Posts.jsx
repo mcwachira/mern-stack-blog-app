@@ -1,13 +1,13 @@
 import React from 'react'
 import './posts.css'
 import Post from '../Post/Post'
-const Posts = () => {
+const Posts = ({ data }) => {
+    console.log(data)
     return (
         <div className="posts">
-            <Post />
-            <Post />
-            <Post />
-            <Post />
+            {
+                data.map((pt, index) => (<Post key={index} pt={pt} />))
+            }
         </div>
     )
 }

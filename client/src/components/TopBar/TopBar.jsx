@@ -2,9 +2,16 @@ import { Link } from "react-router-dom";
 import "./topbar.css";
 import { Outlet } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
+import { UserContext } from "../../context/Context";
+import { useContext } from "react";
 
 export default function Topbar() {
-    const user = false;
+
+    const { user, dispatch } = useContext(UserContext)
+
+    const handleLogOut = () => {
+        dispatch({ type: 'LOGIN_OUT' })
+    }
     return (
         <>
             <div className="top">
@@ -28,7 +35,7 @@ export default function Topbar() {
                                 WRITE
                             </Link>
                         </li>
-                        {user && <li className="topListItem">LOGOUT</li>}
+                        {user && <li className="topListItem" onClick={handleLogOut}>LOGOUT</li>}
                     </ul>
                 </div>
                 <div className="topRight">

@@ -10,13 +10,13 @@ const createPost = asyncHandler(async (req, res) => {
     const {
         title,
         username,
-        desc,
+        description,
         photo,
         categories } = req.body
 
     //first thing is to check the data
 
-    if (!title || !desc || !username) {
+    if (!title || !description || !username) {
         return res.status(400).json({ message: 'all fields are required' })
     }
 
@@ -30,7 +30,7 @@ const createPost = asyncHandler(async (req, res) => {
 
     const postObject = {
         "title": title,
-        ' desc': desc,
+        ' description': description,
         'username': username,
         'photo': photo,
         "categories": categories
@@ -97,17 +97,17 @@ const getPostById = asyncHandler(async (req, res) => {
 })
 
 
-// @desc update a User
+// @description update a User
 // @route PUT /users
 //@access private 
 
 const updatePost = asyncHandler(async (req, res) => {
     const id = req.params.id
 
-    const { username, title, desc } = req.body
+    const { username, title, description } = req.body
     //check the data 
 
-    if (!username || !desc || !title) {
+    if (!username || !description || !title) {
         return res.status(400).json({ message: 'all fields are required' })
     }
 
@@ -116,7 +116,7 @@ const updatePost = asyncHandler(async (req, res) => {
 
         const updatedPostDetails = {
             title: title,
-            desc: desc,
+            description: description,
 
         }
         const updatedPost = await Post.findByIdAndUpdate(
@@ -139,6 +139,7 @@ const deletePost = asyncHandler(async (req, res) => {
     const id = req.params.id
 
     const { username } = req.body
+    console.log(req.body)
     //check the data 
 
     if (!username) {
