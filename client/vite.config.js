@@ -7,7 +7,16 @@ export default ({ mode }) => {
   // import.meta.env.VITE_NAME available here with: process.env.VITE_NAME
   // import.meta.env.VITE_PORT available here with: process.env.VITE_PORT
 
-  // https://vitejs.dev/config/
-  export default defineConfig({
+  return defineConfig({
     plugins: [react()],
-  })
+
+    server: {
+
+      proxy: {
+        "/api/v1": process.env.VITE_API_BASE_URL,
+      },
+
+    },
+
+  });
+}
