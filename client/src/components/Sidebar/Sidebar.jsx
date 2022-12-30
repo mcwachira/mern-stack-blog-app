@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import './Sidebar.css'
 import {
     FaTwitterSquare,
@@ -11,6 +12,18 @@ import {
 import { Link } from 'react-router-dom'
 
 const Sidebar = () => {
+
+    const [categoryName, setCategoryName] = useState([])
+
+    const fetchAllCategories = async () => {
+        const results = await axios.get('/api/v1/category/get')
+        setCategoryName(results.data)
+    }
+
+    useEffect(() => {
+
+        fetchAllCategories()
+    }, [])
     return (
         <div className="sidebar">
             <div className="sidebarItem">
@@ -27,36 +40,15 @@ const Sidebar = () => {
             <div className="sidebarItem">
                 <span className="sidebarTitle">CATEGORIES</span>
                 <ul className="sidebarList">
-                    <li className="sidebarListItem">
-                        <Link className="link" to="/posts?cat=Life">
-                            Life
+
+                    {categoryName.map((category, index) => <li key={index} className="sidebarListItem">
+                        <Link className="link" to={`/?category=${category.name}`}>
+                            {category.name}
                         </Link>
-                    </li>
-                    <li className="sidebarListItem">
-                        <Link className="link" to="/posts?cat=Music">
-                            Music
-                        </Link>
-                    </li>
-                    <li className="sidebarListItem">
-                        <Link className="link" to="/posts?cat=Sport">
-                            Sport
-                        </Link>
-                    </li>
-                    <li className="sidebarListItem">
-                        <Link className="link" to="/posts?cat=Style">
-                            Style
-                        </Link>
-                    </li>
-                    <li className="sidebarListItem">
-                        <Link className="link" to="/posts?cat=Tech">
-                            Tech
-                        </Link>
-                    </li>
-                    <li className="sidebarListItem">
-                        <Link className="link" to="/posts?cat=Cinema">
-                            Cinema
-                        </Link>
-                    </li>
+                    </li>)}
+
+
+
                 </ul>
             </div>
             <div className="sidebarItems">

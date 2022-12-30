@@ -2,9 +2,14 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import './post.css'
 
-const Post = () => {
+const Post = ({ pt }) => {
+    console.log(pt)
+
+    const { _id, title, username, createdAt, categories } = pt
+
     return (
         <div className="post">
+            { }
             <img
                 className="postImg"
                 src='https://images.pexels.com/photos/3062964/pexels-photo-3062964.jpeg?auto=compress&cs=tinysrgb&w=600'
@@ -12,24 +17,21 @@ const Post = () => {
             />
             <div className="postInfo">
                 <div className="postCats">
-                    <span className="postCat">
+
+                    {categories.map((category, index) => (<span key={index} className="postCat">
                         <Link className="link" to="/posts?cat=Music">
-                            Music
+                            {category}
                         </Link>
-                    </span>
-                    <span className="postCat">
-                        <Link className="link" to="/posts?cat=Music">
-                            Life
-                        </Link>
-                    </span>
+                    </span>))}
+
                 </div>
                 <span className="postTitle">
-                    <Link to="/post/abc" className="link">
-                        Lorem ipsum dolor sit amet
+                    <Link to={`/post/${_id}`} className="link">
+                        {title}
                     </Link>
                 </span>
                 <hr />
-                <span className="postDate">1 hour ago</span>
+                <span className="postDate">{new Date(createdAt).toDateString()}</span>
             </div>
             <p className="postDesc">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda
