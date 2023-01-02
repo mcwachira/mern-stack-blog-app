@@ -41,34 +41,34 @@ app.use(express.static('public')) */
 app.use('/', express.static(path.join(__dirname, '/public')))
 
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'images')//destination folder
-    },
-    filename: (req, file, cb) => {
-        cb(null, req.body.name)
-    },
-})
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, 'images')//destination folder
+//     },
+//     filename: (req, file, cb) => {
+//         cb(null, req.body.name)
+//     },
+// })
 
 
-const upload = multer({ storage: storage })
-app.post("/api/upload", upload.single('file'), (req, res) => {
-    res.status(200).json('file has been uploaded')
-})
+// const upload = multer({ storage: storage })
+// app.post("/api/upload", upload.single('file'), (req, res) => {
+//     res.status(200).json('file has been uploaded')
+// })
 
 //get my routes
 
-const userRouter = require('./routes/userRoute')
-const authRouter = require('./routes/authRoute')
-const postRouter = require('./routes/postRoute')
-const categoryRouter = require('./routes/categoryRoute')
+// const userRouter = require('./routes/userRoute')
+// const authRouter = require('./routes/authRoute')
+// const postRouter = require('./routes/postRoute')
+// const categoryRouter = require('./routes/categoryRoute')
 // const cartRouter = require('./routes/cartRoute')
 // const checkoutRouter = require('./routes/stripeRoute')
 
-app.use('/api/v1', userRouter)
-app.use('/api/v1', authRouter)
-app.use('/api/v1', postRouter)
-app.use('/api/v1', categoryRouter)
+// app.use('/api/v1', userRouter)
+// app.use('/api/v1', authRouter)
+// app.use('/api/v1', postRouter)
+// app.use('/api/v1', categoryRouter)
 // app.use('/api/v1', cartRouter)
 // app.use('/api/v1', checkoutRouter)
 // app.use('/', authRouter)
