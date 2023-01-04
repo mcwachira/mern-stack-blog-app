@@ -19,4 +19,23 @@ const connectDb = async () => {
 }
 
 
+
+// process.on('unhnadled promise rejection', err => {
+//     console.log(err.name, err.message);
+//     console.log('Unhandled  promise rejection *** shitting down **')
+//     server.close(() => {
+//         process.exit(1)
+//     })
+// })
+
+//mover to the top
+// process.on('uncaught exception rejection', err => {
+//     console.log('Uncaught exceptions *** shutting down **')
+//     console.log(err.name, err.message);
+
+
+//         process.exit(1)
+
+// })
+
 module.exports = connectDb;

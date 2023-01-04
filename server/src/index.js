@@ -4,11 +4,15 @@ const morgan = require('morgan')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const path = require('path')
-const connectDb = require('./config/db')
+const connectDb = require('../config/db')
 const multer = require('multer')
 require('dotenv').config()
+const httpLogger = require('./loggers/httpLogger')
+const { logError, returnError, isOperationalError } = require('./errorHandling/errorHandler')
+const apiErrorHandler = require('./errorHandling/apiErrorHandler')
+// const { apiErrorHandler } = require('./errorHandling/apiErrorHandler')
 
-
+const globalErrorHandler = require('./controllers/auth/errorController')
 
 
 //initialize express app
@@ -30,7 +34,8 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.use(cors())
 
 //enables us to se logs in our terminal
-app.use(morgan('tiny')) //used to log request from the frontend
+app.use(httpLogger)
+
 //get cookies
 app.use(cookieParser())
 
@@ -58,23 +63,44 @@ app.use('/', express.static(path.join(__dirname, '/public')))
 
 //get my routes
 
-// const userRouter = require('./routes/userRoute')
-// const authRouter = require('./routes/authRoute')
-// const postRouter = require('./routes/postRoute')
-// const categoryRouter = require('./routes/categoryRoute')
+const userRouter = require('./routes/userRoute')
+const authRouter = require('./routes/authRoute')
+const postRouter = require('./routes/postRoute')
+const categoryRouter = require('./routes/categoryRoute')
 // const cartRouter = require('./routes/cartRoute')
 // const checkoutRouter = require('./routes/stripeRoute')
 
-// app.use('/api/v1', userRouter)
-// app.use('/api/v1', authRouter)
-// app.use('/api/v1', postRouter)
-// app.use('/api/v1', categoryRouter)
+app.use('/api/v1', userRouter)
+app.use('/api/v1', authRouter)
+app.use('/api/v1', postRouter)
+app.use('/api/v1', categoryRouter)
 // app.use('/api/v1', cartRouter)
 // app.use('/api/v1', checkoutRouter)
 // app.use('/', authRouter)
 
 
 
-app.listen(PORT, (req, res) => {
+
+// if the Promise is rejected this will catch it
+process.on('unhandledRejection', error => {
+    throw error
+})
+
+process.on('uncaughtException', error => {
+    logError(error)
+
+    if (!isOperationalError(error)) {
+        process.exit(1)
+    }
+})
+
+
+
+//error handler
+app.use(globalErrorHandler)
+
+
+const server = app.listen(PORT, (req, res) => {
     console.log(`app running on port ${PORT}`)
 })
+
