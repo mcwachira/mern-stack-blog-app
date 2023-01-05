@@ -8,11 +8,11 @@ const connectDb = require('../config/db')
 const multer = require('multer')
 require('dotenv').config()
 const httpLogger = require('./loggers/httpLogger')
-const { logError, returnError, isOperationalError } = require('./errorHandling/errorHandler')
-const apiErrorHandler = require('./errorHandling/apiErrorHandler')
-// const { apiErrorHandler } = require('./errorHandling/apiErrorHandler')
+// const { logError, returnError, isOperationalError } = require('./errorHandling/errorHandler')
+// const apiErrorHandler = require('./errorHandling/apiErrorHandler')
+// // const { apiErrorHandler } = require('./errorHandling/apiErrorHandler')
 
-const globalErrorHandler = require('./controllers/auth/errorController')
+// const globalErrorHandler = require('./utils/errorController')
 
 
 //initialize express app
@@ -67,14 +67,14 @@ const userRouter = require('./routes/userRoute')
 const authRouter = require('./routes/authRoute')
 const postRouter = require('./routes/postRoute')
 const categoryRouter = require('./routes/categoryRoute')
-// const cartRouter = require('./routes/cartRoute')
+// const refreshRouter = require('./routes/refreshRoute')
 // const checkoutRouter = require('./routes/stripeRoute')
 
 app.use('/api/v1', userRouter)
 app.use('/api/v1', authRouter)
 app.use('/api/v1', postRouter)
 app.use('/api/v1', categoryRouter)
-// app.use('/api/v1', cartRouter)
+// app.use('/api/v1', refreshRouter)
 // app.use('/api/v1', checkoutRouter)
 // app.use('/', authRouter)
 
@@ -87,7 +87,7 @@ process.on('unhandledRejection', error => {
 })
 
 process.on('uncaughtException', error => {
-    logError(error)
+    // logError(error)
 
     if (!isOperationalError(error)) {
         process.exit(1)
@@ -97,7 +97,7 @@ process.on('uncaughtException', error => {
 
 
 //error handler
-app.use(globalErrorHandler)
+// app.use(globalErrorHandler)
 
 
 const server = app.listen(PORT, (req, res) => {

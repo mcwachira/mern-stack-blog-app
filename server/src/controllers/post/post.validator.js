@@ -1,6 +1,6 @@
 const Joi = require('joi');
-const errorFunction = require('../../utils/errorFunction')
-const { logError } = require('../../errorHandling/errorHandler')
+// const errorFunction = require('../../utils/errorFunction')
+// const { logError } = require('../../errorHandling/errorHandler')
 const AppError = require('../../utils/appError')
 
 const validation = Joi.object({

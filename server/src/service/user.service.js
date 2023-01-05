@@ -38,7 +38,7 @@ const updateUser = async (updateUser) => {
 
     //check if username is in use
     const duplicateUser = await User.findOne({ username }).lean().exec()
-    if (duplicateUser || duplicateUser?._id.toString() !== userId) {
+    if (duplicateUser) {
         throw Error('username already in use')
     }
 

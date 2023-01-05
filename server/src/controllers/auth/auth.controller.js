@@ -2,6 +2,7 @@
 const authService = require('../../service/auth.service')
 const AppError = require('../../utils/appError')
 
+
 const registerUser = async (req, res, next) => {
     const { username, email, password } = req.body
 
@@ -43,8 +44,36 @@ const logInUser = async (req, res, next) => {
     try {
         //send to auth service 
         const signInUser = await authService.logInUser(loggedInUser)
-        res.status(200).json('user logged In successfully')
+
+
+        //crete access token
+        const accessToken = signInUser.accessToken
+
+
+        //crete refresh token 
+        const refreshToken = signInUser.refreshToken
+
+        //set access token in cookie
+
+        res.cookie('accessToken', accessToken, {
+            maxAge: 300000, //5 minutes
+            httpOnly: true
+        })
+
+
+        //set refresh token in cookie
+
+        res.cookie('refreshToken', refreshToken, {
+            maxAge: 3.15e10, //5min
+            httpOnly: true
+        })
+
+
+
+
+        res.status(200).json(signInUser)
     } catch (error) {
+        console.log(error)
         return (error)
     }
 

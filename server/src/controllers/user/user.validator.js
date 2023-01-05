@@ -1,6 +1,9 @@
 const joi = require('joi');
-const errorFunction = require('../../utils/errorFunction')
-const { logError } = require('../../errorHandling/errorHandler')
+// const errorFunction = require('../../utils/errorFunction')
+// const { logError } = require('../../errorHandling/errorHandler')
+
+const AppError = require('../../utils/appError')
+
 
 const validation = joi.object({
     username: joi.string().alphanum().min(3).max(25).trim(true).required(),
@@ -21,7 +24,7 @@ const userValidation = async (req, res, next) => {
         res.status(406)
         return res.json(
             // logError(error)
-            errorFunction(true, `Error in User Data : ${error.message}`)
+            next(new AppError(`Error in User Data : ${error.message}`, 406))
         )
     } else {
         next()

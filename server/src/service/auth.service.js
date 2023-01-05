@@ -29,12 +29,6 @@ const registerUser = async (newUser) => {
     //check if  email has already exist in the database
 
 
-    try {
-
-    } catch (error) {
-
-    }
-
     const emailExist = await User.findOne({ email }).exec()
 
     if (emailExist) {
@@ -62,7 +56,8 @@ const registerUser = async (newUser) => {
 
         return user
     } else {
-        res.status(400).json('user not created')
+        throw Error('user not created')
+
     }
 
 
@@ -72,36 +67,54 @@ const registerUser = async (newUser) => {
 
 const logInUser = async (loggedUser) => {
     const { email, password } = loggedUser
+    console.log(password)
 
 
     //check if email exist
 
 
-    const user = await User.findOne({ email }).exec()
+    const user = await User.findOne({ email })
+    // console.log(user)
 
     if (!user) {
-        return res.status(400).json({ message: 'user with that email does not exist' })
+
+        throw Error('user with that email does not exist')
+
     }
 
     //check if password is valid
     const validate = await bcrypt.compare(password, user.password)
     if (user && validate === false) {
-        return res.status(401).send({ error: 'Email and password do not match ' })
+
+        //handle return
+        throw new Error('Email and password do not match ')
+
     }
 
-    // const accessToken = generateAccessToken(user)
-    // const refreshToken = generateRefreshToken(user)
+    const accessToken = generateAccessToken(user)
+    const refreshToken = generateRefreshToken(user)
 
-    return res.status(200).json({
 
-        ...user,
-        // accessToken,
-        // refreshToken
+
+    // //set access token in cookie
+    // res.send(verifyJwt(accessToken).payload)
+    const signedUser = {
+        user,
+        accessToken,
+        refreshToken
     }
-    )
+
+    if (signedUser) {
+
+        return signedUser
+    } else {
+        throw Error('signing in failed')
+
+
+
+    }
 
 }
-
 module.exports = {
 
     registerUser,
